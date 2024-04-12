@@ -3,6 +3,14 @@
    License: none (public domain)
 */
 
+
+:root{
+--color-button-hover:#1D6154;
+--color-text-button-hover:white;
+}
+
+
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -186,3 +194,31 @@ footer nav ul {
 	margin: 2em
 }
 
+
+/** AJOUT CSS **/
+
+#filtres {
+	padding-top:20px;
+	padding-bottom: 50px;
+}
+
+.flexButton{
+	display:flex;
+	gap:10px;
+	justify-content:center;
+}
+
+.flexButton__filter {
+	font-size:16px;
+	font-weight: 700;
+	height: 38px;
+	border-radius: 60px;
+	min-width:100px;
+	border:solid 1px;
+}
+
+.flexButton__filter:hover,
+.flexButton__filter:focus {
+	background-color:var(--color-button-hover);
+	color:var(--color-text-button-hover);
+}
