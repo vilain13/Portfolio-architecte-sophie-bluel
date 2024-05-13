@@ -59,11 +59,12 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
-.main-header { /** avant header adaptation pour integrer le bandeau connecté **/
+.main-header { 
 	display: flex;
 	justify-content: space-between;
 	margin: 50px 0
 }
+
 section {
 	margin: 50px 0
 }
@@ -183,7 +184,8 @@ li a:hover {
 }
 
 #contact input,
-#connect-login input {
+#connect-login input,
+.work-add input, select {
 	height: 50px;
 	font-size: 1.2em;
 	border: none;
@@ -318,32 +320,54 @@ footer nav ul {
 /** Affichage de la modale en mode Edition **/
 
 .overlay{
-	display:flex;
-	position:absolute;
-	top:0;
+	/** display:flex; **/
+	position:fixed;
+	top:-60px;
 	left:0;
-    width: 100%;
-    height: 469vh;
-	justify-content:center;
-	align-items: center;
+    width: 100vw;
+    height: 100vh;
     background-color: #0000004D; /* Couleur noire avec 30% d'opacité */
-    z-index: 10; 
+	margin-top:60px;
 }
 
+
+
+
+.modal-container {
+	position:absolute;
+	display:flex;
+	flex-direction: column; 
+	width:100vw; 
+	height:100vh;
+	left:0;
+	align-items: center;
+	border-radius:10px;
+	margin:0;
+	text-align:center;
+	margin-top: 600px;
+	display:none;   
+	
+}
+
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: inline !important;
+}
+
+.modal-container-visible {
+	display:flex;
+}
 
 .modal {
-	position: absolute;
-	width: 630px;
-	background-color:whitesmoke;
-	border-radius:10px;
-	top: 600px;
-	margin:0;
-	display:none;
-	text-align:center;
-}
-
-.display-modal {
-	display:block;
+	background-color:white;
+	Z-INDEX:20;
+	width:630px;
+	border-radius: 10px;
+	display:none; 
 }
 
 #modal h2,
@@ -364,13 +388,17 @@ footer nav ul {
 	cursor:pointer;
 }
 
+.modal-gallery {
+	padding-right:103px;
+	padding-left:103px;
+}
+
 .gallery-edit {
 	display:flex;
 	flex-wrap: wrap;
-	justify-content:space-between;
 	gap:9px;
 	row-gap:29px;
-	padding:46px 103px 67px 103px;
+	padding:46px 0px 67px 0px;
 }
 
 .gallery-edit figure {
@@ -406,13 +434,14 @@ footer nav ul {
 	cursor:pointer;
 }
 
-.add-button{
+.modal-button{
 	text-align:center;
 	border-top:solid 1px #B3B3B3;
 	margin-top:48px;
+
 }
 
-.add-button input {
+.modal-button input {
 	width:237px;
 	height:36px;
 	margin-top:38px;
@@ -421,6 +450,97 @@ footer nav ul {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+
+/** Modale Suite ajout de Work  **/
+
+.icons-container {
+	display:flex;
+	justify-content:space-between;
+}
+
+.modal-arrow {
+	color:black;
+	margin-top:26px;
+	margin-left:30px;
+	cursor:pointer;
+
+}
+
+.work-add {
+	display:flex;
+	flex-direction:column;
+	padding:46px 103px 67px 103px;
+}
+
+#preview-img-add {
+	width:40px;
+	margin-top:30px;
+}
+
+#picture-display {
+	display:flex;
+	flex-direction:column;
+	align-items:center;
+}
+
+#picture-display label{
+	text-align:center;
+}
+
+.img-add {
+	background-color: #E8F1F6;
+	padding-bottom:19px;
+
+}
+
+.fa-image{
+	color: #306685;
+	margin-top:30px;
+}
+
+#button-img-add {
+	font-family: 'Syne';
+	font-weight: 700;
+	width:173px;
+	color: #306685;
+	background-color: #CBD6DC;
+	border-radius: 60px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	padding: 10px 15px;
+	cursor: pointer;
+	transition: transform 0.2s ease;
+}
+
+#file-upload {
+	display: none;
+}
+
+.img-add-comment {
+
+	font-size:10px;
+	font-weight:400;
+
+}
+
+.work-add form {
+	margin-top:30px;
+}
+.work-add label{
+	text-align:left;
+	margin-top:30px;
+	margin-bottom:10px;
+}
+
+#modal-button-add {
+	background-color:#A7A7A7;
+}
+
+
+.modal-button-add-enabled:hover {
+	background-color:#1D6154 !important;
+}
 
 
 /** Page Login **/
@@ -455,4 +575,6 @@ input[type="submit"]:hover {
 #connect-login input[type="submit"]{
 	height: 36px;
 }
+
+
 

@@ -2,27 +2,14 @@ console.log("Bonjour JS accueil");
 console.log(localStorage);
 
 
-// Récupération des données de Works
-async function recupererWorksData() {
-    try {
-        const response = await fetch(`${path_url}works`);
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des données Works  de l'api");
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('Erreur:', error.message);
-        return ["Erreur lors de la récupération des données Works  de l'api"];
-    }
-}
-
-// Création des  éléments dans le DoM dans la balise avec la classe "gallery" à partir des données de la BDD Works récupérée
-function createWorksHtml(worksData) {
+// Création du html dans le DOM à partir d'un tableaau d'objets ( pour lapage accueil Gallery ) ou pour l'ajout d'un Work dans la modale ( 1 Work ) 
+function createWorksHtml(worksData) { 
     const containerGallery = document.querySelector(".gallery");
-    containerGallery.innerHTML = ""; // Réinitialisation du contenu
-
-    worksData.forEach(work => {
+    
+    const addWork = (work) => {
         const figureTag = document.createElement("figure");
+        // Attribuer un ID à la balise figure
+        figureTag.id = `work-${work.id}`;
         const imgTag = document.createElement("img");
         imgTag.src = work.imageUrl;
         const figureCaptionTag = document.createElement("figcaption");
@@ -31,30 +18,17 @@ function createWorksHtml(worksData) {
         figureTag.appendChild(imgTag);
         figureTag.appendChild(figureCaptionTag);
         containerGallery.appendChild(figureTag);
-    });
-}
-
-// Récupération des data  de catégories 
-async function recupererCategoriesData() {
-    try {
-        const response = await fetch(`${path_url}categories`);
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des données catégories de l'API");
-        }
-        const categoriesData = await response.json();
-        
-        // Utilisation de l'objet Set pour éliminer les doublons sur le nom des catégories
-        const categoriesSet = new Set(categoriesData.map(category => category.name));
-        const uniqueCategories = Array.from(categoriesSet).map(categoryName => {
-            return categoriesData.find(category => category.name === categoryName);
-        });
-
-        return uniqueCategories;
-    } catch (error) {
-        console.error('Erreur:', error.message);
-        return ["Erreur lors de la récupération des données de catégories de l'API"];
+    };
+    // // Vérifie si worksData est un tableau ou non ( pour utilisation de la même fonction à l'ouverture de la page via Fetch et MAJ d'un element html lors de l'ajout Work)
+    if (Array.isArray(worksData)) {
+        // Si c'est un tableau, recupère les Works via API pour MAJ Html ( à l'initial )
+        worksData.forEach(work => addWork(work));
+    } else {
+        // Si ce n'est pas un tableau, sert à la MAJ d'un element html
+        addWork(worksData);
     }
 }
+
 
 // Création des  boutons Filtres par catégorie dans le DOM du html
 function buttonsFiltres(categoriesData) {
@@ -74,51 +48,45 @@ function buttonsFiltres(categoriesData) {
     });
 }
 
-
-
-// Réinitialisation du contenu de gallery avant un nouvel affichage filtré des projets Works
+// Réinitialisation du contenu de gallery de la page Accueil
 function suppressionHtmlGallery() {
     document.querySelector(".gallery").innerHTML = "";
 }
 
-// Filtrage de la galerie des projets en fonction du bouton de filtre categorie cliqué
-function filterWorksGallery() {
+// Affichage de la Gallery page accueil en fonction du filtre sur catégory ( bouton filtre )
+function filterWorksGallery(categoriesData) {
     const buttons = document.querySelectorAll(".flexButton__filter");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function(event) {
-            const buttonIndex = Array.from(buttons).indexOf(event.target);
-            suppressionHtmlGallery(); // Réinitialisation du contenu gallery avant MAJ des projets Works filtrés
-            recupererWorksData().then(data => {
-                let filteredWorks;
-                if (buttonIndex === 0) {
-                    filteredWorks = data;
-                } else {
-                    filteredWorks = data.filter(work => work.categoryId === (buttonIndex));
-                }
-                createWorksHtml(filteredWorks);
-            });
+    buttons.forEach((button, index) => {
+        button.addEventListener("click", () => {
+            suppressionHtmlGallery(); // Réinitialisation du contenu gallery avant nouvel affichage filtré
+            let filteredWorks;
+            if (index === 0) {  // Si le premier bouton ("Tous"), pas de filtrage
+                filteredWorks = globalWorksData;
+            } else {  // Filtrer selon la catégorie
+                const category = categoriesData[index - 1];  // Ajustement d'index car le premier bouton est "Tous"
+                filteredWorks = globalWorksData.filter(work => work.categoryId === category.id);
+            }
+            console.log(filteredWorks);
+            console.log(globalWorksData);
+            createWorksHtml(filteredWorks);
         });
-    }
+    });
 }
 
-
-// lancement des  fonctions pour générer l'affichage des Projets ( works ) dans la balise html avec classe gallery et gérer l'affichage filtré  par categorie ( bouton )
-
-async function majWorks() {
-    const worksData = await recupererWorksData();
-    createWorksHtml(worksData);
+// affiche Gallery page accueil initial et filtre sur Category sans refaire appel à l'API
+async function majWorksInit() {
+    await recupererWorksData();  // Charge et stocke les données Works*/
+    createWorksHtml(globalWorksData);
 
     const categoriesData = await recupererCategoriesData();
     buttonsFiltres(categoriesData);
-
-    filterWorksGallery();
+    filterWorksGallery(categoriesData);
 }
 
-majWorks();
+majWorksInit();
 
 
-
-//  récupération du  token qui a été stocké dans localstorage après la connexion reussie via le login,
+//  récupération du  token qui a été stocké dans localstorage après la connexion reussie via le login, et si OK affichage mode edition
 function modeEdition() {
     console.log("lancement mode édition");
 
@@ -127,7 +95,7 @@ function modeEdition() {
     // Vérification si le token est présent dans le localStorage
     if (tokenId) {
         console.log("Token d'identification récupéré accueil js:", tokenId);
-        // Activation du mode Edition des Works
+        // Activation du mode Edition des Works. Plusieurs éléments concernés
         // Affiche le bandeau Mode Edition dans le header
         const bannerHeader = document.querySelector('.connected-banner');
         bannerHeader.classList.add("display-connect");
@@ -142,7 +110,8 @@ function modeEdition() {
         const linkLogin = document.querySelector('#login');
         linkLogin.classList.remove("display-connect");
         linkLogin.classList.add("no-display-connect");
-
+       
+      
         // Affiche le mode Edit ( icone et texte après le titre )
         const editMode = document.querySelector('.edit-mode-title');
         editMode.classList.add("display-connect");
@@ -158,7 +127,6 @@ function modeEdition() {
     }
 }
 
-
 modeEdition();  // Appel de la fonction passage en mode édition des travaux Works
 
 
@@ -166,14 +134,15 @@ modeEdition();  // Appel de la fonction passage en mode édition des travaux Wor
 
 function logout() {
     const clickLogout = document.querySelector("#logout");
+   
     clickLogout.addEventListener('click', function(event) {
         event.preventDefault();
         console.log('lancement fonction logout');
 
-        // RAZ de lolacStorage ( contient le tokenId ) 
+        // RAZ de localStorage ( contient le tokenId ) 
       
-       //  localStorage.removeItem('tokenId');   pourquoi cette fonction permet elle de récupérer le tokenid après logout puis login et lien projets obligé d'utiliser localStorage.clear()??
-        localStorage.clear();
+       localStorage.removeItem('data');  
+       
 
        // Cache le bandeau Mode Edition dans le header
        const bannerHeader = document.querySelector('.connected-banner');

@@ -1,96 +1,106 @@
 console.log("Bonjour modale.js");
 
-
-// Création des  éléments dans le DoM dans la section modale  avec la classe "modal-gallery" à partir des données de la BDD Works récupérée
+// Affichage de la modale à l'initial avec le résultat du retour de l'api et lancement ajout d'un element html ( ajout Work ) sans relncer l'API
 function createModalHtml(worksData) {
     const containerModalGallery = document.querySelector(".gallery-edit");
-    containerModalGallery.innerHTML = ""; // Réinitialisation du contenu Gallery-edit
-    console.log (worksData);
-    worksData.forEach(modalWork => {
-        //const link = document.createElement("a");
+
+    // Fonction pour ajouter un seul travail à la galerie modal
+    const addModalWork = (modalWork) => {
         const figure = document.createElement("figure");
         const imgFigure = document.createElement("img");
         const divFigure = document.createElement("div");
         const iconFigure = document.createElement("i");
         imgFigure.src = modalWork.imageUrl;
-       
-        //link.appendChild(article);
+
         figure.appendChild(imgFigure);
         figure.appendChild(divFigure);
         divFigure.appendChild(iconFigure);
-        
-       
+
         containerModalGallery.appendChild(figure);
-        
+
         divFigure.classList.add("logo");
         iconFigure.classList.add("fa-solid", "fa-trash-can");
-    });
+        iconFigure.id = modalWork.id; // Assignation de l'icone à l'icone trash correspondant
+        console.log(iconFigure.id);
+    };
+
+    // Vérifie si worksData est un tableau ou non ( pour utilisation de la même fonction à l'ouverture de la page via Fetch et MAJ d'un element html lors de l'ajout Work)
+    if (Array.isArray(worksData)) {
+        // Si c'est un tableau ( résultat du retour de l'API initial ), construire l'httml initial
+        worksData.forEach(modalWork => addModalWork(modalWork));
+    } else {
+        // Ajout d'un element Html en cas d'ajout de Work sans faire Appel à l'API ( si la variable à traiter n'est pas un tablaau )
+        addModalWork(worksData);
+    }
 }
 
 
-// Affichage de la modale gestion des Works au click sur le libellé "modifier" en mode édiiton
+// Affichage des Works dans la modale  au click sur le libellé "modifier" en mode édiiton
 
-// Lancement de la création de  la structure html avec les données works dans la modale
+// Lancement de la création de  la structure html avec les  données works dans la modale ( 1° ouverture ) sans relancer  l'appel API
 async function majModalWorks() {
     const worksData = await recupererWorksData();
     createModalHtml(worksData); 
 }
 
-majModalWorks();
 
-// Ouverture de la modale
-async function displayModal() {
-    const connexion = document.querySelector("#edit-mode");
-    connexion.addEventListener('click', async function(event) {
-        event.preventDefault();
-        const element  = document.getElementById("modal");
-        element.classList.add("display-modal");
+// Gestion de l'ouverture et fermeture de la modale et sous modale
+document.addEventListener("DOMContentLoaded", function() {
+    const modalContainer = document.querySelector(".modal-container");
+    var modal = document.getElementById('modal');
+    var modalAdd = document.getElementById('modal-add');
+    var overlay = document.getElementsByClassName('overlay')[0];
+    var returnModal = document.getElementById('return-modal');
 
-          // ajout opacité sur page accueil en dehors de la modale
-        const overlay = document.getElementById("overlay");
-        overlay.classList.add("overlay");
-    })
-}
+    function openModal(whichModal) {
+        modalContainer.classList.add('modal-container-visible');
+        whichModal.classList.add('visible');
+        whichModal.classList.remove('hidden');
+        overlay.classList.add('visible');
+        overlay.classList.remove('hidden');
+    }
 
-// Lancement de la fonction d'ouverture de la modale
-async function startDisplayModal() {
-    await displayModal();
-}
+    function closeModal() {
+        modalContainer.classList.remove('modal-container-visible');
+        modal.classList.add('hidden');
+        modal.classList.remove('visible');
+        modalAdd.classList.add('hidden');
+        modalAdd.classList.remove('visible');
+        overlay.classList.add('hidden');
+        overlay.classList.remove('visible');
+    }
 
-startDisplayModal();
-
-
-// Fermeture  de la modale gestion des Works au click sur la croix "fermeture de la modale"  ou en dehors de la modale sauf balise pour lancement du mode édition 
-async function closeModal() {
-    // au clic sur la croix
-    const connexion = document.querySelector("#modal-cross");
-    const overlay = document.getElementById("overlay");
-    connexion.addEventListener('click', async function(event) {
-        event.preventDefault();
-        const element  = document.getElementById("modal");
-        element.classList.remove("display-modal");
-        overlay.classList.remove("overlay"); // supprime le fonds overlay sous la modale
-    })
-    
-    // au clic en dehors de la modale sauf sur la balise mode edition pour l'ouvrir 
-    document.addEventListener('click', function(event) {
-        
-        const element = document.getElementById("modal");
-        const editMode = document.getElementById("edit-mode");
-        const overlay = document.getElementById("overlay");
-
-        // Vérifie si le clic est en dehors de la modale et pas sur "edit-mode"
-        if (!element.contains(event.target) && !editMode.contains(event.target)) {
-            // const element  = document.getElementById("modal");
-            element.classList.remove("display-modal");
-            overlay.classList.remove("overlay"); // supprime le fonds overlay sous la modale
-        }
+    // Ferme modal-add et ouvre modal gallery  au clic  sur fleche gauche
+    returnModal.addEventListener('click', function() {
+        closeModal(); // Ferme toutes les modales ouvertes et l'overlay
+        openModal(modal); // Ouvre la modale modal
     });
-}
 
-        // Lancement de la fonction de fermeture de la modale
-async function startCloseModal() {
-    await closeModal();
-}
+    // Écouteur pour fermer les modales si l'utilisateur clique sur l'overlay
+    overlay.addEventListener('click', closeModal);
 
-startCloseModal();
+    // Empêche la fermeture de la modale lorsqu'on clique à l'intérieur
+    modal.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+    modalAdd.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+
+    // gestion de  la fermeture de la modale au clic sur les icones croix
+    document.getElementById('modal-cross').addEventListener('click', closeModal);
+    document.getElementById('modal-cross-add').addEventListener('click', closeModal);
+
+    // gestion de l'ouverture de la modale gallery ( partie 1 )  au clic sur #edit-mode
+    document.getElementById('edit-mode').addEventListener('click', function() {
+        console.log("clic edit-mode");
+        closeModal(); // Ferme toutes les modales ouvertes
+        openModal(modal); // ouvre la modale gallery-edit ( partie 1 modale )
+    });
+
+    // gestion de l'ouverture de la modale #modal-add et fermeture de #modal ( modale gallery ) au clic sur #modal-add-valid
+    document.getElementById('modal-add-valid').addEventListener('click', function() {
+        closeModal(); // Ferme #modal si elle est ouverte
+        openModal(modalAdd);
+    });
+});

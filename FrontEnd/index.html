@@ -13,27 +13,71 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="js/url-api.js" defer></script>
-	<script src="js/script.js" defer></script>
+	<script src="js/front-page.js" defer></script>
 	<script src="js/modal.js" defer></script>
+	<script src="js/modal-delete-work.js" defer></script>
+	<script src="js/modal-add-work.js" defer></script>
+	
 </head>
 
 
 <body>
 
-	<aside id="overlay">
-		<section id="modal" class="modal">
+	<div class="modal-container">
+
+		<div id="overlay" class="overlay hidden">
+			<!-- Arriere plan grisé de la modale  lorsqu'elle est affichée-->
+		</div>
+
+		<div id="modal" class="modal">
 			<i id="modal-cross" class="fa-solid fa-xmark fa-xl cross-mark"></i>
 			<h2>Galerie photo</h2>
-			<div class="gallery-edit">
-				
+			<div class="modal-gallery">
+				<div class="gallery-edit">
+
+					<!-- Partie affichage des works de l'API ( photo et icone "poubelle" pour initialiser la suppression du work ) alimentée par JS-->
+
+				</div>
+			
+				<div class="modal-button">
+					<input id="modal-add-valid"  type="submit" value="Ajouter une photo">
+				</div>
 			</div>
-		
-			<div class="add-button">
-				<input type="submit" value="Ajouter une photo">
+		</div>
+
+		<div id="modal-add" class="modal">
+			<div class="icons-container">
+				<i id="return-modal" class="fa-solid fa-arrow-left fa-xl modal-arrow"></i>
+				<i id="modal-cross-add" class="fa-solid fa-xmark fa-xl cross-mark"></i>
 			</div>
-		</section>
+			
+			<h2>Ajout Photo</h2>
+			<form class="work-add">
+				<div class="img-add">
+					
+					<div id="picture-display">
+						<img id="preview-img-add" style="display:none;" alt="image prévisualisée du work à ajouter">
+						<i class="fa-regular fa-image fa-3x" id="icon-placeholder"></i>
+						<label id="button-img-add" for="file-upload">+ Ajouter photo</label>
+						<input type="file" id="file-upload" name="file-upload" onchange="getImgAdd()" accept="image/png, image/jpg">
+						<p class="img-add-comment">jpg, png : 4mo max</p>
+					</div>
+				</div>
+				<label for="titre">Titre</label>
+				<input type="text" name="titre" id="titre">
+				<label for="category">Catégorie</label>
+				<select name="category-select" id="category">
+				<!-- Partie choix options categories alimentée par JS-->
+				</select>
+
+				<div  class="modal-button">
+					<input id="modal-button-add" type="submit" value="Valider">
+				</div>
+			</form>
 		
-	</aside>
+		</div>
+		
+	</div>
 	
 		
 	<header>
@@ -88,52 +132,9 @@
 				
 			</div>
 			<div class="gallery">
-				<!--
-				<figure>
-					<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-					<figcaption>Abajour Tahina</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-					<figcaption>Appartement Paris V</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-					<figcaption>Restaurant Sushisen - Londres</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-					<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-					<figcaption>Structures Thermopolis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-					<figcaption>Appartement Paris X</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-					<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-					<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-					<figcaption>Appartement Paris XVIII</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-					<figcaption>Bar “Lullaby” - Paris</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-					<figcaption>Hotel First Arte - New Delhi</figcaption>
-				</figure>
-				-->
+
+				<!-- Partie affichage des works de l'API avec photo et titre alimentée  par JS-->
+			
 			</div>
 		</section>
 		<section id="contact">

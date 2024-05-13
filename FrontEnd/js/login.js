@@ -12,22 +12,8 @@ function getDataForms() {
     return { email, password }; 
 }
 
- 
-// Envoi des données de connexion saisies au serveur via l'api et attend la réponse du serveur transforme les données au format exploitable json
-
-async function envoiLogin(user) {
-    const response = await fetch(`${path_url}users/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(user) // transformation des données au format json
-      });
-      return response;
-}
-
-
 //  Contrôle des infos login soumises avec la bdd users de l'api pour connexion au compte
+
   async function ctrlLogin() {
     const connexion = document.querySelector("#connect-login");
     connexion.addEventListener('submit', async function(event) {
@@ -59,7 +45,3 @@ async function startCtrlLogin() {
 }
 
 startCtrlLogin();
-
-
-
-
