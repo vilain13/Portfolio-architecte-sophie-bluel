@@ -22,15 +22,12 @@ function getDataForms() {
         const reponseIdToken = await envoiLogin(user);
         if (reponseIdToken.status === 200) {
             const data = await reponseIdToken.json();
-            console.log(data);
             // stockage du résultat dans le localStorage pour une utilisation ultérieure  : déclenchement du mode édition
             const dataString = JSON.stringify(data);
             window.localStorage.setItem("data", dataString);
-            console.log(localStorage);
             // re direction vers la page accueil
             window.location.href = "index.html";
         } else {
-            console.log("erreur login");
             // Affichage d' un message d'erreur lorsque le couple identifiant & mot de passe est incorrect
             let errorLog = document.querySelector('.erreur-login');
             errorLog.classList.add('erreur-login-visible');

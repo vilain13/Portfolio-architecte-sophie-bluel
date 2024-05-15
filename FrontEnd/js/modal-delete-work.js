@@ -44,7 +44,6 @@ function removeWorkModalDom(workIdSelect) {
 
 // lancement récupération id à supprimer et suppression du work de l'api et maj html Gallery Accueil et gallery modale
 async function startGetIdWorkDelete() {
-    console.log("lancement startGetIdWorkDelete")
     
     const worksData =   await majModalWorks();
     getIdWorkDelete(worksData); 

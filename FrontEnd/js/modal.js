@@ -74,6 +74,8 @@ document.addEventListener("DOMContentLoaded", function() {
     returnModal.addEventListener('click', function() {
         closeModal(); // Ferme toutes les modales ouvertes et l'overlay
         openModal(modal); // Ouvre la modale modal
+        reinitForm(); // Réinitialisation du formulaire en cas de saisie partielle
+
     });
 
     // Écouteur pour fermer les modales si l'utilisateur clique sur l'overlay
@@ -93,7 +95,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // gestion de l'ouverture de la modale gallery ( partie 1 )  au clic sur #edit-mode
     document.getElementById('edit-mode').addEventListener('click', function() {
-        console.log("clic edit-mode");
         closeModal(); // Ferme toutes les modales ouvertes
         openModal(modal); // ouvre la modale gallery-edit ( partie 1 modale )
     });
@@ -104,3 +105,22 @@ document.addEventListener("DOMContentLoaded", function() {
         openModal(modalAdd);
     });
 });
+
+// Réinitialisation du formulaire
+function reinitForm() {
+        // Réinitialisation du formulaire 
+        document.querySelector(".work-add").reset();
+        const previewImage = document.getElementById('preview-img-add');
+        const iconPlaceholder = document.getElementById('icon-placeholder');
+        const buttonImageAdd = document.getElementById('button-img-add');
+        // Réinitialise l'image selectionnée prévisualisée ( en cas de deux ajout d'affilée pour supprimer imd du work précedant ajouté )
+        previewImage.src = ''; 
+        previewImage.style.display = 'none'; // Cache l'élément de prévisualisation de l'image
+    
+        // Réaffiche l'icône placeholder ( avant affichage img selectionnée )
+        iconPlaceholder.style.display = 'block';
+  
+        // Réaffiche le bouton "Ajputer Photo " ( avant affichage img selectionnée )
+        buttonImageAdd.style.display = 'block';
+
+}

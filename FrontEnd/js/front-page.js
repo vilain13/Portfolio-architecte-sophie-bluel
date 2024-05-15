@@ -66,8 +66,6 @@ function filterWorksGallery(categoriesData) {
                 const category = categoriesData[index - 1];  // Ajustement d'index car le premier bouton est "Tous"
                 filteredWorks = globalWorksData.filter(work => work.categoryId === category.id);
             }
-            console.log(filteredWorks);
-            console.log(globalWorksData);
             createWorksHtml(filteredWorks);
         });
     });
@@ -88,13 +86,10 @@ majWorksInit();
 
 //  récupération du  token qui a été stocké dans localstorage après la connexion reussie via le login, et si OK affichage mode edition
 function modeEdition() {
-    console.log("lancement mode édition");
 
     const tokenId = localStorage.getItem("data");
-    console.log(tokenId);
     // Vérification si le token est présent dans le localStorage
     if (tokenId) {
-        console.log("Token d'identification récupéré accueil js:", tokenId);
         // Activation du mode Edition des Works. Plusieurs éléments concernés
         // Affiche le bandeau Mode Edition dans le header
         const bannerHeader = document.querySelector('.connected-banner');
@@ -102,7 +97,6 @@ function modeEdition() {
       
         //  affiche le lien logout
         const linkLogout = document.querySelector('#logout');
-        console.log(linkLogout);
         linkLogout.classList.remove("no-display-connect");
      
 
@@ -118,7 +112,6 @@ function modeEdition() {
        
         // Cache les boutons filtres
         const sectionFilters = document.getElementById('filters');
-        console.log(sectionFilters);
         sectionFilters.classList.add("no-display-connect");
 
 
@@ -137,7 +130,6 @@ function logout() {
    
     clickLogout.addEventListener('click', function(event) {
         event.preventDefault();
-        console.log('lancement fonction logout');
 
         // RAZ de localStorage ( contient le tokenId ) 
       
@@ -150,7 +142,6 @@ function logout() {
      
        //  cache le lien logout
        const linkLogout = document.querySelector('#logout');
-       console.log(linkLogout);
        linkLogout.classList.add("no-display-connect");
     
        //  affiche  le lien login
@@ -164,7 +155,6 @@ function logout() {
       
        // Affiche les boutons filtres
        const sectionFilters = document.getElementById('filters');
-       console.log(sectionFilters);
        sectionFilters.classList.remove("no-display-connect");
 
        // Ferme la modale du mode Edition des Works  en cas de logout et supprime le overlay derriere la modale qui se ferme

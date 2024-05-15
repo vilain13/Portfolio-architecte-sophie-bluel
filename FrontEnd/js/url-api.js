@@ -57,11 +57,9 @@ async function envoiLogin(user) {
 
 // Mise à jour de l'API Works ( supprimer Work sélectionné) MAJ du contenu html Works de Gallery et de Gallery-Edit ( modale ) 
 async function deleteWork(workIdSelect) {
-    console.log("lancement fonction deleteWork");
-    console.log(workIdSelect);
     // Vérification si logué adm ( token valide )
     try {
-        const data = JSON.parse(localStorage.getItem("data"));
+        const data = JSON.parse(localStorage.getItem("data")||"{}" );
         let token;
         if (data) {
             token = data.token;
@@ -135,18 +133,8 @@ async function workPost(image, title, category) {
       alert('Projet ajouté avec succès !'); // feedback utilisateur
       console.log(result);
       console.log(globalWorksData);
-  
-      // Réinitialisation du formulaire 
-      document.querySelector(".work-add").reset();
-      const previewImage = document.getElementById('preview-img-add');
-      const iconPlaceholder = document.getElementById('icon-placeholder');
-  
-      // Réinitialise l'image selectionnée prévisualisée ( en cas de deux ajout d'affilée pour supprimer imd du work précedant ajouté )
-      previewImage.src = ''; 
-      previewImage.style.display = 'none'; // Cache l'élément de prévisualisation de l'image
-  
-      // Réaffiche l'icône placeholder ( avant affichage img selectionnée )
-      iconPlaceholder.style.display = 'block';
+
+      reinitForm(); // Réinitialisation du formulaire en cas de saisie partielle
   
       // Ajout du nouveau travail dans les galerie HTML sans faire appel à l'API ( page Accueil et modale )
       createWorksHtml(result); // Ajout dans la Gallery de la page accueil du Work créé
