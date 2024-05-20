@@ -131,11 +131,13 @@ async function workPost(image, title, category) {
       }
       globalWorksData.push(result);  // Mise à jour de cette variable en y ajoutant le work créé pour MAJ affichage html Gallery Accueil sans faire appel à l'API lors des filtrages
       alert('Projet ajouté avec succès !'); // feedback utilisateur
-      console.log(result);
-      console.log(globalWorksData);
 
-      reinitForm(); // Réinitialisation du formulaire en cas de saisie partielle
-  
+      reinitForm(); // Réinitialisation du formulaire apres enrichissement de l'API
+      
+      // Réinitialise la couleur du bouton de soumission formulaire d'ajout de Works 
+      const buttonAddValid = document.getElementById('modal-button-add');
+      buttonAddValid.style.backgroundColor = ''; // ré initiaalise la couleur d'origine
+
       // Ajout du nouveau travail dans les galerie HTML sans faire appel à l'API ( page Accueil et modale )
       createWorksHtml(result); // Ajout dans la Gallery de la page accueil du Work créé
       createModalHtml(result); // Ajout dans la Gallery-edit de la modale ( partie 1 )  du Work créé

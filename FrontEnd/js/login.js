@@ -1,9 +1,4 @@
 
-console.log("Bonjour login.js");
-
-console.log(path_url);
-
-
 // Récupération des valeurs saisies dans le formulaire de connexion et les envoi sous forme d'un objet
 
 function getDataForms() {

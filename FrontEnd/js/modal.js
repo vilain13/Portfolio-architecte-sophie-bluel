@@ -1,4 +1,3 @@
-console.log("Bonjour modale.js");
 
 // Affichage de la modale à l'initial avec le résultat du retour de l'api et lancement ajout d'un element html ( ajout Work ) sans relncer l'API
 function createModalHtml(worksData) {
@@ -21,7 +20,6 @@ function createModalHtml(worksData) {
         divFigure.classList.add("logo");
         iconFigure.classList.add("fa-solid", "fa-trash-can");
         iconFigure.id = modalWork.id; // Assignation de l'icone à l'icone trash correspondant
-        console.log(iconFigure.id);
     };
 
     // Vérifie si worksData est un tableau ou non ( pour utilisation de la même fonction à l'ouverture de la page via Fetch et MAJ d'un element html lors de l'ajout Work)

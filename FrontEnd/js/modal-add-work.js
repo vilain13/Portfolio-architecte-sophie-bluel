@@ -1,7 +1,4 @@
 
-console.log("Hello modal-add-work.js");
-
-
 // Propose la liste des categories de l'API categories dans la selection de la catégorie
 async function addOptionsCategory() {
   const selectElement = document.getElementById('category');

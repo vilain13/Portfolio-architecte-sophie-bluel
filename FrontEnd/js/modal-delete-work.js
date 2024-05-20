@@ -1,4 +1,3 @@
-console.log("Hello modale-delete-work.js");
 
 // Fonction pour récupérer l'id du Work à supprimer en cliquant sur son icône Trash et lancer la fonction de suppression du Work
 function getIdWorkDelete() {

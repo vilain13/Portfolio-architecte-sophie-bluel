@@ -1,5 +1,3 @@
-console.log("Bonjour JS accueil");
-console.log(localStorage);
 
 
 // Création du html dans le DOM à partir d'un tableaau d'objets ( pour lapage accueil Gallery ) ou pour l'ajout d'un Work dans la modale ( 1 Work ) 
@@ -21,7 +19,7 @@ function createWorksHtml(worksData) {
     };
     // // Vérifie si worksData est un tableau ou non ( pour utilisation de la même fonction à l'ouverture de la page via Fetch et MAJ d'un element html lors de l'ajout Work)
     if (Array.isArray(worksData)) {
-        // Si c'est un tableau, recupère les Works via API pour MAJ Html ( à l'initial )
+        // Si c'est un tableau, recupère les Works via API pour MAJ Html ( à l'initial ) ou via variable globalWorksData sans appel API ( filtrage )
         worksData.forEach(work => addWork(work));
     } else {
         // Si ce n'est pas un tableau, sert à la MAJ d'un element html
@@ -34,12 +32,13 @@ function createWorksHtml(worksData) {
 function buttonsFiltres(categoriesData) {
     const sectionFiltres = document.querySelector("#filters");
     sectionFiltres.classList.add("flexButton");
-
+    // Crée le bouton "Tous" pour affichage de tous les Works
     const buttonElementAll = document.createElement("button");
     buttonElementAll.classList.add('flexButton__filter');
     buttonElementAll.innerText = "Tous";
     sectionFiltres.appendChild(buttonElementAll);
 
+    // Crée les boutons pour chaque catégorie à filtrer
     categoriesData.forEach(category => {
         const buttonElement = document.createElement("button");
         buttonElement.classList.add('flexButton__filter');
@@ -116,7 +115,7 @@ function modeEdition() {
 
 
     } else {
-        console.log("Aucun token d'identification n'est stocké dans le localStorage.");
+       
     }
 }
 
